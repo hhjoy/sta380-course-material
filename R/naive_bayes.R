@@ -1,6 +1,8 @@
 library(tm)
 
 # Remember to source in the "reader" wrapper function
+# it's stored as a Github gist at:
+# https://gist.github.com/jgscott/28d9d1287a0c3c1477e2113f6758d5ff
 
 ## Rolling two directories together into a single corpus
 author_dirs = Sys.glob('../data/ReutersC50/C50train/*')
@@ -18,9 +20,6 @@ for(author in author_dirs) {
 all_docs = lapply(file_list, readerPlain) 
 names(all_docs) = file_list
 names(all_docs) = sub('.txt', '', names(all_docs))
-
-my_corpus = Corpus(VectorSource(all_docs))
-names(my_corpus) = file_list
 
 # Preprocessing
 my_corpus = tm_map(my_corpus, content_transformer(tolower)) # make everything lowercase
@@ -42,7 +41,7 @@ DTM
 # Now a dense matrix
 X = as.matrix(DTM)
 
-# Naive Bayes
+# Naive Bayes: the training sets for the two authors
 AP_train = X[1:45,]
 AC_train = X[51:95,]
 
